@@ -32,6 +32,7 @@ Deploy `Frontend-Web/` to Vercel.
 Vercel settings:
 
 - Framework preset: Other
+- Root directory: `Frontend-Web`
 - Build command: `npm run build`
 - Output directory: `dist`
 - Environment variable: `HSA_API_BASE_URL=https://your-backend-service.example.com`
