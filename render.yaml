@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: hepatoscan-api
+    env: node
+    plan: free
+    rootDir: Backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PGSSLMODE
+        value: require
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://w2-h-app22.vercel.app
+      - key: FRONTEND_URL
+        value: https://w2-h-app22.vercel.app

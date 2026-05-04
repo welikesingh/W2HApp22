@@ -390,6 +390,221 @@
   text-align: center;
 }
 
+/* Navigation */
+.app-nav {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-nav .container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #475569;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.nav-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.admin-link {
+  background: #1e293b;
+  color: white;
+}
+
+.admin-link:hover {
+  background: #334155;
+}
+
+/* Patient Management */
+.patient-management {
+  margin-top: 20px;
+}
+
+.patient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.patient-header h2 {
+  color: #1e293b;
+  font-size: 1.5rem;
+}
+
+.patient-form {
+  background: #f8fafc;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.patient-form h3 {
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.patients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.patient-card {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.patient-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+}
+
+.patient-info {
+  flex: 1;
+}
+
+.patient-info h4 {
+  color: #1e293b;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.patient-meta {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.patient-meta span {
+  background: #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.patient-symptoms {
+  color: #475569;
+  font-size: 13px;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.alcohol-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.alcohol-badge.none {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.alcohol-badge.occasional {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.alcohol-badge.moderate {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.alcohol-badge.heavy {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.patient-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-edit {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-edit:hover {
+  background: #2563eb;
+}
+
+.btn-delete {
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background: #b91c1c;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+}
+
 @media (max-width: 768px) {
   .app-header h1 {
     font-size: 2rem;
@@ -405,5 +620,23 @@
   
   .card {
     padding: 20px;
+  }
+  
+  .app-nav .container {
+    flex-direction: column;
+  }
+  
+  .nav-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .patient-card {
+    flex-direction: column;
+  }
+  
+  .patient-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
 }

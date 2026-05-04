@@ -3,9 +3,13 @@ import UploadSection from './components/UploadSection';
 import PatientForm from './components/PatientForm';
 import ReportSection from './components/ReportSection';
 import AdviceSection from './components/AdviceSection';
+import PatientManagement from './components/PatientManagement';
+import apiService from './services/apiService';
+import { API_URLS } from './config/api';
 import './App.css';
 
 function App() {
+  const [activeTab, setActiveTab] = useState('scan'); // 'scan' or 'patients'
   const [scanType, setScanType] = useState('hepato');
   const [patientData, setPatientData] = useState({
     firstName: '',
@@ -41,17 +45,10 @@ function App() {
     formData.append('alcoholUse', patientData.alcoholUse || 'Unknown');
 
     try {
-      const endpoint = scanType === 'hepato' ? '/api/hepato-analyze/' : '/api/analyze/';
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Analysis failed');
-      }
-
-      const data = await response.json();
+      const data = scanType === 'hepato' 
+        ? await apiService.hepatoAnalyze(formData)
+        : await apiService.analyzeScan(formData);
+      
       setReport(data.report);
       
       // Automatically get advice
@@ -65,25 +62,22 @@ function App() {
 
   const getAdvice = async (reportData) => {
     try {
-      const endpoint = scanType === 'hepato' ? '/api/hepato-advice/' : '/api/advice/';
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          report: reportData,
-          patientAge: patientData.age,
-          patientSex: patientData.sex,
-          symptoms: patientData.symptoms,
-          alcoholUse: patientData.alcoholUse
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Advice generation failed');
-      }
-
-      const data = await response.json();
-      setAdvice(data.advice);
+      const adviceData = scanType === 'hepato'
+        ? await apiService.hepatoAdvice({
+            report: reportData,
+            patientAge: patientData.age,
+            patientSex: patientData.sex,
+            symptoms: patientData.symptoms,
+            alcoholUse: patientData.alcoholUse
+          })
+        : await apiService.getAdvice({
+            report: reportData,
+            patientAge: patientData.age,
+            patientSex: patientData.sex,
+            symptoms: patientData.symptoms
+          });
+      
+      setAdvice(adviceData.advice);
     } catch (err) {
       console.error('Advice error:', err);
     }
@@ -105,10 +99,37 @@ function App() {
         </div>
       </header>
 
+      <nav className="app-nav">
+        <div className="container">
+          <button 
+            className={`nav-btn ${activeTab === 'scan' ? 'active' : ''}`}
+            onClick={() => setActiveTab('scan')}
+          >
+            🔬 Scan Analysis
+          </button>
+          <button 
+            className={`nav-btn ${activeTab === 'patients' ? 'active' : ''}`}
+            onClick={() => setActiveTab('patients')}
+          >
+            👥 Patient Management
+          </button>
+          <a 
+            href={API_URLS.admin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-btn admin-link"
+          >
+            ⚙️ Django Admin
+          </a>
+        </div>
+      </nav>
+
       <main className="container">
         {error && <div className="error">{error}</div>}
 
-        {!report ? (
+        {activeTab === 'patients' ? (
+          <PatientManagement />
+        ) : !report ? (
           <>
             <div className="card scan-type-card">
               <h2>Select Scan Type</h2>
