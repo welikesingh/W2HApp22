@@ -1,0 +1,14 @@
+{
+  "name": "hepatoscan-frontend-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HepatoScan AI frontend for Vercel",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/serve.js",
+    "start": "node scripts/serve.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
