@@ -2,26 +2,29 @@
 
 This repository is split into two deployable projects:
 
-- `Backend/`: Express API using Supabase Postgres through `DATABASE_URL`
+- `Backend/`: Express API using Render Postgres through `DATABASE_URL`
 - `Frontend-Web/`: Vercel frontend build that outputs static files to `dist/`
 
 ## Backend
 
-Supabase provides the Postgres database. The Node API still needs to run on a web hosting service such as Render, Railway, Fly.io, or another Node-capable host.
+Render provides both the Node web service and the Postgres database.
 
-1. Create a Supabase project.
-2. Copy the Supabase pooled Postgres connection string into `DATABASE_URL`.
+1. Create or open the Render Postgres database.
+2. Copy the Render database connection string into the backend web service `DATABASE_URL`.
 3. Deploy `Backend/` as the service root.
 4. Use:
    - Build command: `npm install`
    - Start command: `npm start`
 5. Add environment variables:
-   - `DATABASE_URL`: Supabase Postgres connection string
+   - `DATABASE_URL`: Render Postgres connection string
    - `JWT_SECRET`: long random secret
    - `JWT_EXPIRES_IN`: `7d`
    - `GEMINI_API_KEY`: Google Gemini API key
-   - `CORS_ORIGIN`: Vercel frontend URL, for example `https://your-app.vercel.app`
+   - `CORS_ORIGIN`: `https://w2-h-app22.vercel.app`
+   - `FRONTEND_URL`: `https://w2-h-app22.vercel.app`
    - `PGSSLMODE`: `require`
+
+For the current Render database, use the username `postgres` exactly. If the copied URL starts with `postgresql://postgress:...`, correct it to `postgresql://postgres:...` before saving it.
 
 The API creates the `users` table automatically on first startup.
 
