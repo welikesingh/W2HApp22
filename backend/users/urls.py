@@ -5,6 +5,12 @@ urlpatterns = [
     # Health check
     path('health/', views.health_check, name='health_check'),
     
+    # Authentication endpoints
+    path('auth/signup/', views.signup, name='signup'),
+    path('auth/login/', views.login, name='login'),
+    path('auth/logout/', views.logout, name='logout'),
+    path('auth/me/', views.get_current_user, name='get_current_user'),
+    
     # Patient endpoints
     path('patients/', views.PatientListCreateView.as_view(), name='patient_list_create'),
     path('patients/<int:pk>/', views.PatientDetailView.as_view(), name='patient_detail'),

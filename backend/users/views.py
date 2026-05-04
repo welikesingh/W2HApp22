@@ -1,12 +1,39 @@
 import os
 import base64
 import requests
+import jwt
+import bcrypt
+from datetime import datetime, timedelta
 from rest_framework import generics, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
 from .models import Patient, ScanReport, AnalysisResult
 from .serializers import PatientSerializer, ScanReportSerializer, AnalysisResultSerializer
+
+# Simple in-memory user storage (replace with database model in production)
+_users = {}
+
+def generate_token(user_id, email, name):
+    """Generate JWT token"""
+    payload = {
+        'user_id': user_id,
+        'email': email,
+        'name': name,
+        'exp': datetime.utcnow() + timedelta(days=7),
+        'iat': datetime.utcnow()
+    }
+    return jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+
+def decode_token(token):
+    """Decode JWT token"""
+    try:
+        return jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+    except jwt.ExpiredSignatureError:
+        return None
+    except jwt.InvalidTokenError:
+        return None
 
 
 def get_gemini_response(prompt, image_data=None, mime_type=None):

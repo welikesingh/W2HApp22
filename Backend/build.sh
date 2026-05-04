@@ -5,11 +5,23 @@ set -o errexit
 # Install dependencies
 pip install -r requirements.txt
 
-# Collect static files
-python manage.py collectstatic --no-input
+# Show migration status
+echo "Checking migration status..."
+python manage.py showmigrations
 
-# Run migrations (auto table creation)
+# Create migrations if needed
+echo "Creating migrations if needed..."
+python manage.py makemigrations users --no-input || true
+
+# Run migrations for all apps including users
+echo "Running migrations..."
+python manage.py migrate users
+echo "Users app migrated"
+
 python manage.py migrate
 
-# Create superuser if not exists (optional - for admin access)
-# python manage.py createsuperuser --noinput --username admin --email admin@example.com || true
+# Collect static files
+echo "Collecting static files..."
+python manage.py collectstatic --no-input
+
+echo "Build complete!"

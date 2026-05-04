@@ -1,21 +1,16 @@
 (function () {
   const TOKEN_KEY = "hsa_auth_token";
   const USER_KEY = "hsa_auth_user";
-  const API_BASE_KEY = "hsa_api_base_url";
-  const DEFAULT_API_BASE_URL = "https://w2happ22.onrender.com";
+  const API_BASE_URL = "https://w2happ22-1.onrender.com";
   const originalFetch = window.fetch.bind(window);
 
-  function configuredApiBase() {
-    const saved = localStorage.getItem(API_BASE_KEY);
-    const value = saved && !saved.includes("your-render-backend-url")
-      ? saved
-      : window.HSA_API_BASE_URL || DEFAULT_API_BASE_URL;
-    return value.replace(/\/$/, "");
+  function apiBase() {
+    return API_BASE_URL.replace(/\/$/, "");
   }
 
   function apiUrl(input) {
     if (typeof input !== "string" || !input.startsWith("/api")) return input;
-    return `${configuredApiBase()}${input}`;
+    return `${apiBase()}${input}`;
   }
 
   function token() {
@@ -82,7 +77,7 @@
         font-size: 12px;
         margin-top: 2px;
       }
-      .auth-actions, .auth-form, .auth-api-row {
+      .auth-actions, .auth-form {
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
@@ -95,7 +90,7 @@
         border-top: 1px solid var(--border);
       }
       .auth-form.visible { display: flex; }
-      .auth-form input, .auth-api-row input {
+      .auth-form input {
         min-width: 190px;
         flex: 1;
         background: var(--card);
@@ -107,7 +102,7 @@
         padding: 10px 12px;
         outline: none;
       }
-      .auth-form input:focus, .auth-api-row input:focus { border-color: var(--accent); }
+      .auth-form input:focus { border-color: var(--accent); }
       .auth-small-btn {
         border: 1px solid var(--border);
         border-radius: 8px;
@@ -134,11 +129,6 @@
         font-size: 12px;
         min-height: 16px;
       }
-      .auth-api-row {
-        grid-column: 1 / -1;
-        display: none;
-      }
-      .auth-api-row.visible { display: flex; }
       @media (max-width: 720px) {
         .auth-panel { grid-template-columns: 1fr; }
         .auth-actions { justify-content: flex-start; }
@@ -159,7 +149,6 @@
         <div class="auth-actions">
           <button class="auth-small-btn primary" id="showLoginBtn" type="button">Login</button>
           <button class="auth-small-btn" id="showSignupBtn" type="button">Signup</button>
-          <button class="auth-small-btn" id="showApiBtn" type="button">API URL</button>
           <button class="auth-small-btn danger" id="logoutBtn" type="button" style="display:none;">Logout</button>
         </div>
         <form class="auth-form" id="loginForm">
@@ -173,11 +162,6 @@
           <input id="signupPassword" type="password" placeholder="Password, min 8 chars" autocomplete="new-password" required />
           <button class="auth-small-btn primary" type="submit">Create Account</button>
         </form>
-        <div class="auth-api-row" id="apiRow">
-          <input id="apiBaseInput" type="url" placeholder="https://your-render-service.onrender.com" />
-          <button class="auth-small-btn primary" id="saveApiBtn" type="button">Save</button>
-          <button class="auth-small-btn" id="clearApiBtn" type="button">Clear</button>
-        </div>
         <div class="auth-error" id="authError"></div>
       </section>
     `;
@@ -226,21 +210,6 @@
   function wireEvents() {
     document.getElementById("showLoginBtn").addEventListener("click", () => showForm("loginForm"));
     document.getElementById("showSignupBtn").addEventListener("click", () => showForm("signupForm"));
-    document.getElementById("showApiBtn").addEventListener("click", () => {
-      const row = document.getElementById("apiRow");
-      row.classList.toggle("visible");
-      document.getElementById("apiBaseInput").value = configuredApiBase();
-    });
-    document.getElementById("saveApiBtn").addEventListener("click", () => {
-      const value = document.getElementById("apiBaseInput").value.trim().replace(/\/$/, "");
-      if (value) localStorage.setItem(API_BASE_KEY, value);
-      setAuthError(value ? "API URL saved." : "Enter your Render backend URL.");
-    });
-    document.getElementById("clearApiBtn").addEventListener("click", () => {
-      localStorage.removeItem(API_BASE_KEY);
-      document.getElementById("apiBaseInput").value = "";
-      setAuthError("API URL cleared.");
-    });
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       try {
         await originalFetch(apiUrl("/api/auth/logout"), { method: "POST" });
