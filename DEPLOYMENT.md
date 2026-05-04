@@ -35,7 +35,7 @@ Vercel settings:
 - Root directory: `Frontend-Web`
 - Build command: `npm run build`
 - Output directory: `dist`
-- Environment variable: `HSA_API_BASE_URL=https://your-backend-service.example.com`
+- Environment variable: `HSA_API_BASE_URL=https://w2happ22.onrender.com`
 
 You can also set the API URL from the app by clicking `API URL`.
 

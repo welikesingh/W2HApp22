@@ -39,6 +39,28 @@ const pool = process.env.DATABASE_URL
 
 let dbReadyPromise;
 
+app.get('/', (req, res) => {
+  res.redirect(process.env.FRONTEND_URL || 'https://w2-h-app22.vercel.app');
+});
+
+app.get('/api', (req, res) => {
+  res.json({
+    name: 'HepatoScan API',
+    status: 'ok',
+    frontend: process.env.FRONTEND_URL || 'https://w2-h-app22.vercel.app',
+    health: '/api/health',
+    routes: [
+      '/api/auth/signup',
+      '/api/auth/login',
+      '/api/auth/me',
+      '/api/analyse',
+      '/api/advice',
+      '/api/hepato-analyze',
+      '/api/hepato-advice',
+    ],
+  });
+});
+
 async function ensureDb() {
   if (!pool) {
     throw new Error('DATABASE_URL is not configured');

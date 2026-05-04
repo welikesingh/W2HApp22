@@ -21,7 +21,7 @@ function copyDir(source, destination) {
 fs.rmSync(distDir, { recursive: true, force: true });
 copyDir(publicDir, distDir);
 
-const apiBaseUrl = process.env.HSA_API_BASE_URL || '';
+const apiBaseUrl = process.env.HSA_API_BASE_URL || 'https://w2happ22.onrender.com';
 fs.writeFileSync(
   path.join(distDir, 'runtime-config.js'),
   `window.HSA_API_BASE_URL = ${JSON.stringify(apiBaseUrl)};\n`

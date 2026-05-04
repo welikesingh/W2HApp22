@@ -22,4 +22,6 @@ services:
       - key: GEMINI_API_KEY
         sync: false
       - key: CORS_ORIGIN
-        sync: false
+        value: https://w2-h-app22.vercel.app
+      - key: FRONTEND_URL
+        value: https://w2-h-app22.vercel.app

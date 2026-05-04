@@ -2,14 +2,15 @@
   const TOKEN_KEY = "hsa_auth_token";
   const USER_KEY = "hsa_auth_user";
   const API_BASE_KEY = "hsa_api_base_url";
+  const DEFAULT_API_BASE_URL = "https://w2happ22.onrender.com";
   const originalFetch = window.fetch.bind(window);
 
   function configuredApiBase() {
-    return (
-      localStorage.getItem(API_BASE_KEY) ||
-      window.HSA_API_BASE_URL ||
-      ""
-    ).replace(/\/$/, "");
+    const saved = localStorage.getItem(API_BASE_KEY);
+    const value = saved && !saved.includes("your-render-backend-url")
+      ? saved
+      : window.HSA_API_BASE_URL || DEFAULT_API_BASE_URL;
+    return value.replace(/\/$/, "");
   }
 
   function apiUrl(input) {

@@ -1,1 +1,1 @@
-window.HSA_API_BASE_URL = window.HSA_API_BASE_URL || "";
+window.HSA_API_BASE_URL = window.HSA_API_BASE_URL || "https://w2happ22.onrender.com";
