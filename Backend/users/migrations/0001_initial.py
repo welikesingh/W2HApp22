@@ -1,0 +1,86 @@
+# Generated initial migration
+
+from django.db import migrations, models
+import django.db.models.deletion
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='Patient',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('first_name', models.CharField(max_length=100)),
+                ('last_name', models.CharField(max_length=100)),
+                ('email', models.EmailField(blank=True, max_length=254, null=True)),
+                ('phone', models.CharField(blank=True, max_length=20, null=True)),
+                ('age', models.PositiveIntegerField(blank=True, null=True)),
+                ('sex', models.CharField(blank=True, choices=[('male', 'Male'), ('female', 'Female'), ('other', 'Other')], max_length=10, null=True)),
+                ('address', models.TextField(blank=True, null=True)),
+                ('medical_history', models.TextField(blank=True, null=True)),
+                ('alcohol_use', models.CharField(blank=True, max_length=50, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+            ],
+            options={
+                'db_table': 'patients',
+                'ordering': ['-created_at'],
+            },
+        ),
+        migrations.CreateModel(
+            name='ScanReport',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('test_type', models.CharField(choices=[('ultrasound', 'Ultrasound'), ('ct', 'CT Scan'), ('mri', 'MRI'), ('xray', 'X-Ray'), ('other', 'Other')], default='ultrasound', max_length=20)),
+                ('scan_category', models.CharField(choices=[('liver', 'Liver'), ('general', 'General')], default='general', max_length=20)),
+                ('symptoms', models.TextField(blank=True, null=True)),
+                ('scan_image', models.TextField(blank=True, null=True)),
+                ('severity', models.CharField(blank=True, choices=[('normal', 'Normal'), ('mild', 'Mild'), ('moderate', 'Moderate'), ('severe', 'Severe')], max_length=20, null=True)),
+                ('scan_quality', models.CharField(blank=True, max_length=100, null=True)),
+                ('impression', models.TextField(blank=True, null=True)),
+                ('recommended_follow_up', models.TextField(blank=True, null=True)),
+                ('limitations', models.TextField(blank=True, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('patient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scan_reports', to='users.patient')),
+            ],
+            options={
+                'db_table': 'scan_reports',
+                'ordering': ['-created_at'],
+            },
+        ),
+        migrations.CreateModel(
+            name='AnalysisResult',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('report_title', models.CharField(blank=True, max_length=200, null=True)),
+                ('urgency', models.CharField(blank=True, max_length=20, null=True)),
+                ('severity', models.CharField(blank=True, choices=[('normal', 'Normal'), ('mild', 'Mild'), ('moderate', 'Moderate'), ('severe', 'Severe')], max_length=20, null=True)),
+                ('scan_quality', models.CharField(blank=True, max_length=100, null=True)),
+                ('findings', models.JSONField(default=list)),
+                ('impression', models.TextField(blank=True, null=True)),
+                ('differential_diagnosis', models.JSONField(default=list)),
+                ('possible_conditions', models.JSONField(default=list)),
+                ('recommended_follow_up', models.TextField(blank=True, null=True)),
+                ('limitations', models.TextField(blank=True, null=True)),
+                ('simple_summary', models.TextField(blank=True, null=True)),
+                ('what_it_means', models.TextField(blank=True, null=True)),
+                ('recommendations', models.JSONField(default=list)),
+                ('red_flags', models.JSONField(default=list)),
+                ('warning_signs', models.JSONField(default=list)),
+                ('specialist_referral', models.CharField(blank=True, max_length=200, null=True)),
+                ('disclaimer', models.TextField(blank=True, null=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('scan_report', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='analysis_results', to='users.scanreport')),
+            ],
+            options={
+                'db_table': 'analysis_results',
+                'ordering': ['-created_at'],
+            },
+        ),
+    ]
